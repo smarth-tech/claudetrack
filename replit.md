@@ -1,7 +1,9 @@
 # ClaudeTrack — Claude Usage Intelligence Platform
 
+> Open source. MIT Licensed. Self-hostable. Free forever.
+
 ## Overview
-A Claude-native API observability and analytics platform that acts as a proxy/middleware layer between developers and the Anthropic Claude API. Provides real-time token tracking, cost forecasting, budget alerts, per-session analytics, and rate limit prediction.
+A Claude-native API observability and analytics platform that acts as a proxy/middleware layer between developers and the Anthropic Claude API. Provides real-time token tracking, cost forecasting, budget alerts, per-session analytics, and rate limit prediction. Built in response to GitHub issues #29721, #26177, #29604, #28962 — developer complaints Anthropic hasn't addressed. No billing, no tiers, no limits — community-driven and free forever.
 
 ## Architecture
 

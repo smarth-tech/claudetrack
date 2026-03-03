@@ -5,8 +5,10 @@ import { Card } from "@/components/ui/card";
 import {
   Zap, BarChart3, Shield, AlertTriangle, TrendingUp, Terminal,
   Code2, ArrowRight, CheckCircle, Activity, DollarSign, Clock,
-  Lock, Eye, Globe, Cpu
+  Lock, Eye, Globe, Cpu, GitBranch, Star, Users, Heart,
+  GitPullRequest, BookOpen, Package
 } from "lucide-react";
+import { SiGithub } from "react-icons/si";
 
 const features = [
   {
@@ -19,7 +21,7 @@ const features = [
   {
     icon: TrendingUp,
     title: "Cost Forecasting",
-    description: "AI-powered spend predictions based on your usage patterns. Know your month-end bill before it arrives.",
+    description: "Spend predictions based on your usage patterns. Know your month-end bill before it arrives.",
     color: "text-purple-400",
     bg: "bg-purple-400/10",
   },
@@ -33,7 +35,7 @@ const features = [
   {
     icon: AlertTriangle,
     title: "Budget Alerts",
-    description: "Set thresholds and get notified before you blow your budget. Configure per-project or global spend limits.",
+    description: "Set thresholds and get notified before you exceed your budget. Configure per-project or global spend limits.",
     color: "text-orange-400",
     bg: "bg-orange-400/10",
   },
@@ -56,7 +58,7 @@ const features = [
 const securityPoints = [
   "Your API key is AES-256-GCM encrypted before storage",
   "Keys are never returned to the frontend",
-  "You can also use our clientside SDK — key never leaves your server",
+  "SDK-only mode available — key never leaves your server",
   "Decryption only happens server-side during proxy forwarding",
   "No plaintext storage, ever",
 ];
@@ -65,18 +67,18 @@ const steps = [
   {
     num: "01",
     title: "Create a Project",
-    description: "Sign up and create a project. You'll receive a unique proxy key.",
+    description: "Deploy your own instance or use the hosted demo. Create a project and get a unique proxy key.",
     code: "cti_a3b7x9k2...",
   },
   {
     num: "02",
     title: "Point Your SDK",
-    description: "Replace api.anthropic.com with our proxy URL in your existing code.",
+    description: "Replace api.anthropic.com with your proxy URL in your existing code. Zero other changes.",
     code: `import anthropic
 
 client = anthropic.Anthropic(
   api_key="cti_your_proxy_key",
-  base_url="https://yourapp.repl.co/proxy/v1"
+  base_url="https://your-instance.repl.co/proxy/v1"
 )`,
   },
   {
@@ -87,34 +89,44 @@ client = anthropic.Anthropic(
   },
 ];
 
-const pricingTiers = [
+const contributionAreas = [
   {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    description: "For individual developers",
-    features: ["Up to 10k requests/month", "1 project", "7-day history", "Basic analytics"],
-    cta: "Start Free",
-    highlight: false,
+    icon: GitPullRequest,
+    title: "Submit Pull Requests",
+    description: "Fix bugs, add features, improve the proxy middleware, or enhance the dashboard UI.",
+    color: "text-blue-400",
+    bg: "bg-blue-400/10",
   },
   {
-    name: "Pro",
-    price: "$19",
-    period: "/month",
-    description: "For serious developers and small teams",
-    features: ["Unlimited requests", "5 projects", "90-day history", "Rate limit prediction", "Budget alerts", "Session analytics"],
-    cta: "Start Pro Trial",
-    highlight: true,
+    icon: BookOpen,
+    title: "Improve Documentation",
+    description: "Help write clearer setup guides, add language-specific SDK examples, or translate docs.",
+    color: "text-green-400",
+    bg: "bg-green-400/10",
   },
   {
-    name: "Team",
-    price: "$79",
-    period: "/month",
-    description: "For teams building with Claude",
-    features: ["Everything in Pro", "Unlimited projects", "1-year history", "Claude Code OTEL", "API access", "Priority support"],
-    cta: "Contact Sales",
-    highlight: false,
+    icon: Package,
+    title: "Build Integrations",
+    description: "Add SDK wrappers for new languages, OTEL connectors, or notification channels for alerts.",
+    color: "text-purple-400",
+    bg: "bg-purple-400/10",
   },
+  {
+    icon: Star,
+    title: "Report Issues",
+    description: "Found a bug or have a feature idea? Open an issue on GitHub. Every piece of feedback helps.",
+    color: "text-yellow-400",
+    bg: "bg-yellow-400/10",
+  },
+];
+
+const techStack = [
+  "React + TypeScript",
+  "Express.js",
+  "PostgreSQL + Drizzle ORM",
+  "Recharts",
+  "Tailwind CSS + shadcn/ui",
+  "TanStack Query",
 ];
 
 export default function Landing() {
@@ -127,13 +139,19 @@ export default function Landing() {
               <Zap className="w-3.5 h-3.5 text-primary-foreground" />
             </div>
             <span className="font-bold text-sm">ClaudeTrack</span>
+            <Badge className="text-xs border-0 bg-green-400/10 text-green-400 ml-1">Open Source</Badge>
           </div>
           <div className="flex items-center gap-3">
-            <Link href="/dashboard">
-              <Button variant="ghost" size="sm" data-testid="link-dashboard">Dashboard</Button>
+            <a href="https://github.com/anthropics/anthropic-sdk-python/issues" target="_blank" rel="noopener noreferrer">
+              <Button variant="ghost" size="sm" className="gap-2" data-testid="link-github">
+                <SiGithub className="w-4 h-4" /> GitHub
+              </Button>
+            </a>
+            <Link href="/setup">
+              <Button variant="ghost" size="sm" data-testid="link-setup">Docs</Button>
             </Link>
             <Link href="/dashboard">
-              <Button size="sm" data-testid="button-get-started">Get Started Free</Button>
+              <Button size="sm" data-testid="button-get-started">Open Dashboard</Button>
             </Link>
           </div>
         </div>
@@ -147,9 +165,14 @@ export default function Landing() {
         </div>
 
         <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-primary/15 text-primary border-primary/20 text-xs px-3 py-1" data-testid="badge-announcement">
-            Claude-native · Rate limit prediction · OTEL support
-          </Badge>
+          <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
+            <Badge className="bg-primary/15 text-primary border-primary/20 text-xs px-3 py-1" data-testid="badge-announcement">
+              Claude-native · Rate limit prediction · OTEL support
+            </Badge>
+            <Badge className="bg-green-400/10 text-green-400 border-green-400/20 text-xs px-3 py-1">
+              <Heart className="w-3 h-3 mr-1" /> Free & Open Source
+            </Badge>
+          </div>
 
           <h1 className="text-5xl md:text-6xl font-bold leading-tight tracking-tight mb-6">
             Stop Flying Blind with{" "}
@@ -158,22 +181,28 @@ export default function Landing() {
             </span>
           </h1>
 
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-4 leading-relaxed">
             The first Claude-native observability platform. Real-time token tracking, cost forecasting,
-            and rate limit prediction — all in 2 minutes setup.
+            and rate limit prediction — self-hosted, open source, and free forever.
+          </p>
+
+          <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-10">
+            Built in response to{" "}
+            <span className="text-foreground font-medium">GitHub issues #29721, #26177, #29604, #28962</span>
+            {" "}— the loudest developer complaints Anthropic hasn't addressed.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
             <Link href="/dashboard">
               <Button size="lg" className="gap-2" data-testid="button-hero-cta">
-                Start Tracking Free <ArrowRight className="w-4 h-4" />
+                Open Dashboard <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
-            <Link href="/setup">
-              <Button size="lg" variant="outline" className="gap-2" data-testid="button-view-docs">
-                <Code2 className="w-4 h-4" /> View Setup Guide
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" variant="outline" className="gap-2" data-testid="button-star-github">
+                <SiGithub className="w-4 h-4" /> Star on GitHub
               </Button>
-            </Link>
+            </a>
           </div>
 
           <div className="relative mx-auto max-w-3xl rounded-xl border border-border/60 bg-card/40 backdrop-blur-sm overflow-hidden shadow-2xl">
@@ -239,10 +268,10 @@ export default function Landing() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-3xl font-bold mb-3">Up and running in 3 steps</h2>
-            <p className="text-muted-foreground">No SDK changes. No complex configuration. Just point your existing code at our proxy.</p>
+            <p className="text-muted-foreground">No SDK changes. No complex configuration. Just point your existing code at your instance.</p>
           </div>
           <div className="space-y-6">
-            {steps.map((step, i) => (
+            {steps.map((step) => (
               <div key={step.num} className="flex gap-6 items-start">
                 <div className="flex-shrink-0 w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
                   <span className="text-xs font-bold text-primary">{step.num}</span>
@@ -272,9 +301,8 @@ export default function Landing() {
                 We know you won't hand over your API key without reason.
               </h2>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                We've designed ClaudeTrack with this concern at the forefront.
-                Your Anthropic API key is encrypted before it ever touches our database,
-                and we never return it to the client.
+                ClaudeTrack is designed with this concern front and center. Since it's open source,
+                you can audit every line of code. Self-host it and your data never leaves your infrastructure.
               </p>
               <ul className="space-y-3">
                 {securityPoints.map((point) => (
@@ -302,8 +330,8 @@ export default function Landing() {
                     <Eye className="w-4 h-4 text-blue-400" />
                   </div>
                   <div>
-                    <div className="text-sm font-medium">Never exposed</div>
-                    <div className="text-xs text-muted-foreground">Frontend blind to key</div>
+                    <div className="text-sm font-medium">Fully auditable</div>
+                    <div className="text-xs text-muted-foreground">100% open source code</div>
                   </div>
                 </div>
                 <div className="h-px bg-border/40" />
@@ -312,8 +340,8 @@ export default function Landing() {
                     <Globe className="w-4 h-4 text-purple-400" />
                   </div>
                   <div>
-                    <div className="text-sm font-medium">Or skip it entirely</div>
-                    <div className="text-xs text-muted-foreground">SDK-only mode available</div>
+                    <div className="text-sm font-medium">Self-hostable</div>
+                    <div className="text-xs text-muted-foreground">Your infra, your data</div>
                   </div>
                 </div>
               </div>
@@ -325,49 +353,63 @@ export default function Landing() {
       <section className="py-20 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <h2 className="text-3xl font-bold mb-3">Simple, usage-based pricing</h2>
-            <p className="text-muted-foreground">Start free. Only pay as you grow.</p>
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <GitBranch className="w-5 h-5 text-primary" />
+              <Badge className="bg-primary/10 text-primary border-primary/20">Open Source</Badge>
+            </div>
+            <h2 className="text-3xl font-bold mb-3">Built in the open. Improved together.</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">
+              ClaudeTrack is MIT-licensed. Fork it, self-host it, contribute back. Every PR welcome.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {pricingTiers.map((tier) => (
-              <Card
-                key={tier.name}
-                className={`p-6 relative ${tier.highlight
-                  ? "border-primary/50 bg-primary/5 shadow-lg shadow-primary/10"
-                  : "border-border/60"
-                  }`}
-              >
-                {tier.highlight && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <Badge className="bg-primary text-primary-foreground border-0 text-xs px-3">Most Popular</Badge>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-12">
+            {contributionAreas.map((area) => (
+              <Card key={area.title} className="p-5 border-border/60 hover-elevate cursor-default">
+                <div className="flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-lg ${area.bg} flex items-center justify-center flex-shrink-0`}>
+                    <area.icon className={`w-5 h-5 ${area.color}`} />
                   </div>
-                )}
-                <div className="mb-4">
-                  <div className="text-sm font-semibold text-muted-foreground mb-1">{tier.name}</div>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold">{tier.price}</span>
-                    <span className="text-muted-foreground text-sm">{tier.period}</span>
+                  <div>
+                    <h3 className="font-semibold mb-1">{area.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{area.description}</p>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1">{tier.description}</div>
                 </div>
-                <ul className="space-y-2.5 mb-6">
-                  {tier.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <CheckCircle className="w-3.5 h-3.5 text-green-400 flex-shrink-0" />
-                      <span>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/dashboard">
-                  <Button
-                    className="w-full"
-                    variant={tier.highlight ? "default" : "outline"}
-                    data-testid={`button-pricing-${tier.name.toLowerCase()}`}
-                  >
-                    {tier.cta}
-                  </Button>
-                </Link>
               </Card>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <Card className="p-5 border-border/60 text-center">
+              <Users className="w-8 h-8 text-primary mx-auto mb-3" />
+              <div className="text-2xl font-bold mb-1">Community-first</div>
+              <p className="text-sm text-muted-foreground">Decisions made in the open via GitHub issues and discussions</p>
+            </Card>
+            <Card className="p-5 border-border/60 text-center">
+              <GitBranch className="w-8 h-8 text-purple-400 mx-auto mb-3" />
+              <div className="text-2xl font-bold mb-1">MIT Licensed</div>
+              <p className="text-sm text-muted-foreground">Use it, fork it, build on it. No strings attached.</p>
+            </Card>
+            <Card className="p-5 border-border/60 text-center">
+              <Heart className="w-8 h-8 text-red-400 mx-auto mb-3" />
+              <div className="text-2xl font-bold mb-1">Free Forever</div>
+              <p className="text-sm text-muted-foreground">No paywalls, no tiers, no limits. Self-host for free.</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-16 px-6 border-y border-border/40 bg-card/20">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold mb-2">Tech Stack</h2>
+            <p className="text-muted-foreground text-sm">Familiar, modern, easy to contribute to</p>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {techStack.map((tech) => (
+              <Badge key={tech} className="px-3 py-1.5 text-sm border-border/60 bg-card text-muted-foreground">
+                {tech}
+              </Badge>
             ))}
           </div>
         </div>
@@ -375,15 +417,22 @@ export default function Landing() {
 
       <section className="py-20 px-6 border-t border-border/40">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to take control of your Claude spend?</h2>
+          <h2 className="text-3xl font-bold mb-4">Ready to contribute or self-host?</h2>
           <p className="text-muted-foreground mb-8">
-            Join developers who are already saving money and shipping faster with ClaudeTrack.
+            Fork the repo, deploy your own instance in minutes, or open a PR. The community is building this together.
           </p>
-          <Link href="/dashboard">
-            <Button size="lg" className="gap-2" data-testid="button-footer-cta">
-              Get Started Free <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <Button size="lg" className="gap-2" data-testid="button-footer-github">
+                <SiGithub className="w-4 h-4" /> View on GitHub
+              </Button>
+            </a>
+            <Link href="/dashboard">
+              <Button size="lg" variant="outline" className="gap-2" data-testid="button-footer-cta">
+                Open Dashboard <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -392,13 +441,13 @@ export default function Landing() {
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
             <span className="font-semibold text-foreground">ClaudeTrack</span>
-            <span>— Claude Usage Intelligence Platform</span>
+            <span>— MIT Licensed · Claude Usage Intelligence Platform</span>
           </div>
           <div className="flex flex-wrap gap-6">
             <Link href="/setup"><span className="cursor-pointer hover:text-foreground transition-colors">Docs</span></Link>
             <Link href="/dashboard"><span className="cursor-pointer hover:text-foreground transition-colors">Dashboard</span></Link>
-            <span>Privacy</span>
-            <span>Terms</span>
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
+            <span>MIT License</span>
           </div>
         </div>
       </footer>
