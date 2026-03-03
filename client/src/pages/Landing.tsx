@@ -187,12 +187,6 @@ export default function Landing() {
             and rate limit prediction — self-hosted, open source, and free forever.
           </p>
 
-          <p className="text-sm text-muted-foreground max-w-xl mx-auto mb-10">
-            Built in response to{" "}
-            <span className="text-foreground font-medium">GitHub issues #29721, #26177, #29604, #28962</span>
-            {" "}— the loudest developer complaints Anthropic hasn't addressed.
-          </p>
-
           <div className="flex flex-wrap items-center justify-center gap-4 mb-16">
             <Link href="/dashboard">
               <Button size="lg" className="gap-2" data-testid="button-hero-cta">
