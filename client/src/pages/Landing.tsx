@@ -6,9 +6,9 @@ import {
   Zap, BarChart3, Shield, AlertTriangle, TrendingUp, Terminal,
   Code2, ArrowRight, CheckCircle, Activity, DollarSign, Clock,
   Lock, Eye, Globe, Cpu, GitBranch, Star, Users, Heart,
-  GitPullRequest, BookOpen, Package
+  GitPullRequest, BookOpen, Package, Sparkles
 } from "lucide-react";
-import { SiGithub } from "react-icons/si";
+import { SiGithub, SiPython, SiTypescript, SiDocker } from "react-icons/si";
 
 const features = [
   {
@@ -66,26 +66,27 @@ const securityPoints = [
 const steps = [
   {
     num: "01",
-    title: "Create a Project",
-    description: "Deploy your own instance or use the hosted demo. Create a project and get a unique proxy key.",
-    code: "cti_a3b7x9k2...",
+    title: "Get your proxy key",
+    description: "Create a project and grab your unique proxy key from the Projects page. Takes 30 seconds.",
+    code: "cti_a3b7x9k2p9n3m7...",
+    note: "Your proxy key",
   },
   {
     num: "02",
-    title: "Point Your SDK",
-    description: "Replace api.anthropic.com with your proxy URL in your existing code. Zero other changes.",
-    code: `import anthropic
+    title: "Set two env vars — nothing else",
+    description: "The Anthropic SDK reads these automatically. Zero code changes. Works with Python, Node, Go, Ruby, and anything else that uses the Anthropic SDK.",
+    code: `ANTHROPIC_API_KEY="cti_your_proxy_key"
+ANTHROPIC_BASE_URL="https://your-instance.repl.co/proxy/v1"
 
-client = anthropic.Anthropic(
-  api_key="cti_your_proxy_key",
-  base_url="https://your-instance.repl.co/proxy/v1"
-)`,
+# Run your code exactly as before — nothing changes.`,
+    note: ".env · Docker · Railway · Render · Vercel · Fly.io",
   },
   {
     num: "03",
-    title: "Watch the Data",
-    description: "Every Claude API call is now tracked. See costs, tokens, and rate limit predictions in real-time.",
-    code: "✓ 412 tokens · $0.0012 · 1.2s",
+    title: "Open the dashboard",
+    description: "Every Claude API call is now tracked. Tokens, cost, latency, rate limits — live and per-project.",
+    code: "✓ 2,847 tokens  ·  $0.0091  ·  1.2s  ·  claude-3-5-sonnet",
+    note: "Real-time request log",
   },
 ];
 
@@ -266,10 +267,33 @@ export default function Landing() {
 
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-14">
+          <div className="text-center mb-6">
             <h2 className="text-3xl font-bold mb-3">Up and running in 3 steps</h2>
-            <p className="text-muted-foreground">No SDK changes. No complex configuration. Just point your existing code at your instance.</p>
+            <p className="text-muted-foreground mb-6">No refactoring. No SDK swaps. Just two environment variables.</p>
+            <div className="inline-flex items-center gap-2 bg-green-400/10 border border-green-400/20 text-green-400 text-sm font-semibold px-4 py-2 rounded-full">
+              <Sparkles className="w-4 h-4" />
+              Works with any language or framework that uses the Anthropic SDK
+            </div>
           </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+            {[
+              { icon: SiPython, label: "Python", color: "text-blue-400" },
+              { icon: SiTypescript, label: "TypeScript", color: "text-blue-300" },
+              { icon: SiDocker, label: "Docker", color: "text-cyan-400" },
+              { label: "LangChain", color: "text-green-400" },
+              { label: "LlamaIndex", color: "text-orange-400" },
+              { label: "Vercel AI SDK", color: "text-purple-400" },
+              { label: "FastAPI", color: "text-teal-400" },
+            ].map((tech) => (
+              <div key={tech.label} className="flex items-center gap-1.5 bg-card border border-border/60 rounded-full px-3 py-1.5 text-xs text-muted-foreground">
+                {"icon" in tech && tech.icon && <tech.icon className={`w-3.5 h-3.5 ${tech.color}`} />}
+                {!("icon" in tech) && <span className={`w-2 h-2 rounded-full bg-current ${tech.color}`} />}
+                <span>{tech.label}</span>
+              </div>
+            ))}
+          </div>
+
           <div className="space-y-6">
             {steps.map((step) => (
               <div key={step.num} className="flex gap-6 items-start">
@@ -279,8 +303,15 @@ export default function Landing() {
                 <div className="flex-1 pt-1">
                   <h3 className="font-semibold mb-1">{step.title}</h3>
                   <p className="text-sm text-muted-foreground mb-3">{step.description}</p>
-                  <div className="bg-card border border-border/60 rounded-lg px-4 py-3 font-mono text-xs text-muted-foreground whitespace-pre">
-                    {step.code}
+                  <div className={`rounded-lg border overflow-hidden ${step.num === "02" ? "border-green-400/30" : "border-border/60"}`}>
+                    {step.note && (
+                      <div className={`px-4 py-1.5 border-b text-xs font-medium ${step.num === "02" ? "bg-green-400/10 border-green-400/20 text-green-400" : "bg-muted/40 border-border/40 text-muted-foreground"}`}>
+                        {step.note}
+                      </div>
+                    )}
+                    <div className={`px-4 py-3 font-mono text-xs text-muted-foreground whitespace-pre ${step.num === "02" ? "bg-green-400/5" : "bg-card"}`}>
+                      {step.code}
+                    </div>
                   </div>
                 </div>
               </div>
